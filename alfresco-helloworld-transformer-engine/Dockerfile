@@ -10,10 +10,16 @@ ARG GROUPID=1000
 ARG HWUSERNAME=transform-helloworld
 ARG USERID=33004
 
-COPY target/alfresco-helloworld-transformer-${env.project_version}.jar /usr/bin
-
-RUN ln /usr/bin/alfresco-helloworld-transformer-${env.project_version}.jar /usr/bin/alfresco-helloworld-transformer.jar && \
+# Install ffmpeg
+RUN yum install -y epel-release && \
+    yum localinstall -y --nogpgcheck https://download1.rpmfusion.org/free/el/rpmfusion-free-release-7.noarch.rpm && \
+    yum install -y dnf-plugins-core && \
+    yum install -y ffmpeg && \
     yum clean all
+
+COPY target/alfresco-helloworld-transformer-2.5.4.jar /usr/bin
+
+RUN ln /usr/bin/alfresco-helloworld-transformer-2.5.4.jar /usr/bin/alfresco-helloworld-transformer.jar
 
 RUN groupadd -g ${GROUPID} ${GROUPNAME} && \
     useradd -u ${USERID} -G ${GROUPNAME} ${HWUSERNAME} && \

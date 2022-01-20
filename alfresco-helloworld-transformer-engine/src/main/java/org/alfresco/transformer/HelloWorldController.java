@@ -27,6 +27,8 @@
 package org.alfresco.transformer;
 
 import org.alfresco.transform.exceptions.TransformException;
+import org.alfresco.transformer.executors.RuntimeExec;
+import org.alfresco.transformer.executors.RuntimeExec.ExecutionResult;
 import org.alfresco.transformer.probes.ProbeTestTransform;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -128,10 +130,28 @@ public class HelloWorldController extends AbstractTransformerController
 
         try
         {
-            String nameFromFile = Files.readString(sourceFile.toPath());
-            String bodyContent = String.format(greeting, nameFromFile);
-            String html = String.format(HTML_TEMPLATE, bodyContent);
-            Files.writeString(targetFile.toPath(), html);
+
+            RuntimeExec runtimeExec = new RuntimeExec();
+            Map<String, String[]> commandsAndArguments = new HashMap<>();
+            // Command to generate a video containing a text string.
+            // ffmpeg -f lavfi -i color=size=320x240:duration=10:rate=25:color=blue -vf "drawtext=fontfile=/path/to/font.ttf:fontsize=30:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text='Stack Overflow'" output.mp4
+            commandsAndArguments.put("*", new String[] { "ffmpeg", "-y", "-f", "lavfi", "-i", "color=size=320x240:duration=10:rate=25:color=blue", "-vf", "drawtext=fontfile=/path/to/font.ttf:fontsize=30:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text='"+sourceFile.toString()+"'", targetFile.toString() });
+            runtimeExec.setCommandsAndArguments(commandsAndArguments);
+
+
+            final ExecutionResult result = runtimeExec.execute();
+
+            if (result.getExitValue() != 0 && result.getStdErr() != null && result.getStdErr().length() > 0)
+            {
+                throw new TransformException(BAD_REQUEST.value(),
+                        "Transformer exit code was not 0: \n" + result.getStdErr());
+            }
+
+            if (!targetFile.exists() || targetFile.length() == 0)
+            {
+                throw new TransformException(INTERNAL_SERVER_ERROR.value(),
+                        "Transformer failed to create an output file");
+            }
         }
         catch (Exception e)
         {

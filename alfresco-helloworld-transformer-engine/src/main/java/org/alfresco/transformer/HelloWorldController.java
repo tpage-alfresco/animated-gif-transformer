@@ -55,20 +55,11 @@ public class HelloWorldController extends AbstractTransformerController
 {
     private static final Logger logger = LoggerFactory.getLogger(HelloWorldController.class);
 
-    private static final String HTML_TEMPLATE = "<!DOCTYPE html><html><head><meta charset=\"utf-8\">" +
-            "<title>Hello World</title></head><body><h1 style=\"color:blue\">T-Engine Example</h1><p>%s</p></body></html>";
-
-    private static final Map<String, String> HW_DICTIONARY = new HashMap<>();
-
     public HelloWorldController()
     {
         logger.info("-------------------------------------------" );
         logger.info( getTransformerName() + " is starting up" );
         logger.info("-------------------------------------------" );
-
-        HW_DICTIONARY.put("english", "Hello World! Hello %s!");
-        HW_DICTIONARY.put("spanish", "¡Hola Mundo! ¡Hola %s!");
-        HW_DICTIONARY.put("german",  "Hallo Welt! Hallo %s! ");
     }
 
     /**
@@ -119,15 +110,6 @@ public class HelloWorldController extends AbstractTransformerController
     @Override
     public void transformImpl(String transformName, String sourceMimetype, String targetMimetype, Map<String, String> transformOptions, File sourceFile, File targetFile)
     {
-        String language = transformOptions.get("language");
-        String greeting = HW_DICTIONARY.get(language.toLowerCase());
-
-        if (greeting == null)
-        {
-            throw new TransformException(BAD_REQUEST.value(),
-                    "We don't have a greeting for input language '" + language + "'." );
-        }
-
         try
         {
 

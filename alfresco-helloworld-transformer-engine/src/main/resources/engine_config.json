@@ -12,7 +12,7 @@
       "transformerName": "helloWorld",
       "supportedSourceAndTargetList":
       [
-        {"sourceMediaType": "text/plain", "targetMediaType": "video/mp4"  }
+        {"sourceMediaType": "video/mp4", "targetMediaType": "image/gif"  }
       ],
       "transformOptions":
       [

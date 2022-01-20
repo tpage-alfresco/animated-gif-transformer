@@ -115,9 +115,9 @@ public class HelloWorldController extends AbstractTransformerController
 
             RuntimeExec runtimeExec = new RuntimeExec();
             Map<String, String[]> commandsAndArguments = new HashMap<>();
-            // Command to generate a video containing a text string.
-            // ffmpeg -f lavfi -i color=size=320x240:duration=10:rate=25:color=blue -vf "drawtext=fontfile=/path/to/font.ttf:fontsize=30:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text='Stack Overflow'" output.mp4
-            commandsAndArguments.put("*", new String[] { "ffmpeg", "-y", "-f", "lavfi", "-i", "color=size=320x240:duration=10:rate=25:color=blue", "-vf", "drawtext=fontfile=/path/to/font.ttf:fontsize=30:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text='"+sourceFile.toString()+"'", targetFile.toString() });
+            // Command to generate an animated gif from an mp4.
+            // ffmpeg -ss 30 -t 3 -i input.mp4 -vf "fps=10,scale=320:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" -loop 0 output.gif
+            commandsAndArguments.put("*", new String[] { "ffmpeg", "-y", "-ss", "0", "-t", "3", "-i", sourceFile.toString(), "-vf", "fps=10,scale=320:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse", "-loop", "0", targetFile.toString() });
             runtimeExec.setCommandsAndArguments(commandsAndArguments);
 
 

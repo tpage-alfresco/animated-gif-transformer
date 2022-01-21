@@ -1,11 +1,20 @@
-# Alfresco Hello World Transformer Engine
+# Alfresco Animated Gif Transformer Engine
 
 ## Purpose
-This is an example Hello World transformer used to demonstrate how to create a simple transformer based on
-[alfresco-transform-core](https://github.com/Alfresco/alfresco-transform-core).
-The instructions to follow with this example can be found [here](https://github.com/Alfresco/acs-packaging/blob/master/docs/creating-a-t-engine.md).
+This project extends the [example Hello World transformer](https://github.com/Alfresco/alfresco-helloworld-transformer) to allow conversion of mp4 videos into animated gifs.
+
+It was a hackathon project in January 2022.
+
+![Cat animated gif](cat.gif)
 
 See the [parent project](https://github.com/Alfresco/alfresco-transform-core) for more information and instructions on how to build & run.
+
+---
+**NOTE**
+
+Much of this project and the remainder of this README contains references to the Hello World transformer.
+
+---
 
 ## Prerequisites
 * Java 11
